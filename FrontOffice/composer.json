@@ -1,0 +1,17 @@
+{
+    "name": "zava-misy/front-office",
+    "authors": [
+        {
+            "name": "Ratovonjanahary Gaylor",
+            "email": "ratovonjanaharygaylor@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ZavaMisy\\FrontOffice\\": "src/"
+        }
+    },
+    "require": {
+        "flightphp/core": "^3.18"
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "name": "zava-misy/back-office",
+    "autoload": {
+        "psr-4": {
+            "ZavaMisy\\BackOffice\\": "src/"
+        }
+    },
+    "require": {
+        "flightphp/core": "^3.18"
+    }
+}

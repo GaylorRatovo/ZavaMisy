@@ -1,0 +1,54 @@
+services:
+  back-office:
+    build:
+      context: ./BackOffice
+      dockerfile: Dockerfile
+    container_name: zavamisy-back-office
+    ports:
+      - "8001:80"
+    volumes:
+      - ./BackOffice:/var/www/html
+    environment:
+      - APP_ENV=development
+      - DB_DRIVER=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=zavamisy
+      - DB_USER=zava_user
+      - DB_PASSWORD=secret
+    networks:
+      - zavamisy-network
+
+  front-office:
+    build:
+      context: ./FrontOffice
+      dockerfile: Dockerfile
+    container_name: zavamisy-front-office
+    ports:
+      - "8000:80"
+    volumes:
+      - ./FrontOffice:/var/www/html
+    environment:
+      - APP_ENV=development
+    networks:
+      - zavamisy-network
+
+  db:
+    image: postgres:16-alpine
+    container_name: zavamisy-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=zavamisy
+      - POSTGRES_USER=zava_user
+      - POSTGRES_PASSWORD=secret
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - zavamisy-network
+
+networks:
+  zavamisy-network:
+    driver: bridge
+
+volumes:
+  pgdata:

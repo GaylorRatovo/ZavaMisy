@@ -1,0 +1,39 @@
+# Dépendances Composer
+/vendor/
+composer.lock
+
+# Fichiers d'environnement
+.env
+.env.local
+.env.*.local
+
+# IDE et éditeurs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Cache et logs
+/var/
+/tmp/
+*.log
+
+# Fichiers temporaires
+*.tmp
+.cache/
+
+# Build et distribution
+/build/
+/dist/
+
+# Node modules (si utilisation de frontend tools)
+/node_modules/
+npm-debug.log
+yarn-error.log
+
+# Fichiers personnels
+*.bak
+*.orig
