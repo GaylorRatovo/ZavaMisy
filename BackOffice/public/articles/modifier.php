@@ -1,80 +1,27 @@
 <?php
-$pageTitle = 'Modifier un article';
-require_once __DIR__ . '/../../includes/header.php';
-
-$pdo = getConnection();
-$erreur = '';
+require_once __DIR__ . '/../../models/Article.php';
+require_once __DIR__ . '/../../models/Categorie.php';
+require_once __DIR__ . '/../../models/Image.php';
 
 $id = $_GET['id'] ?? null;
 if (!$id || !is_numeric($id)) {
     redirect('/articles/');
 }
 
-$stmt = $pdo->prepare("SELECT * FROM articles WHERE id = ?");
-$stmt->execute([$id]);
-$article = $stmt->fetch();
-
+$article = Article::findById((int) $id);
 if (!$article) {
     redirect('/articles/');
 }
 
-$categories = $pdo->query("SELECT * FROM categories ORDER BY nom")->fetchAll();
+$pageTitle = 'Modifier un article';
+require_once __DIR__ . '/../../includes/header.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $titre = trim($_POST['titre'] ?? '');
-    $slug = slugify($titre);
-    $contenu = trim($_POST['contenu'] ?? '');
-    $extrait = trim($_POST['extrait'] ?? '');
-    $categorieId = $_POST['categorie_id'] ?: null;
-    $metaTitre = trim($_POST['meta_titre'] ?? '');
-    $metaDescription = trim($_POST['meta_description'] ?? '');
-    $datePublication = $_POST['date_publication'] ?: null;
-    $imageAlt = trim($_POST['image_alt'] ?? '');
+$categories = Categorie::findAllSimple();
+$images = Image::findByArticleId((int) $id);
 
-    if (empty($titre) || empty($contenu)) {
-        $erreur = 'Le titre et le contenu sont obligatoires.';
-    } else {
-        $imageName = $article['image'];
-
-        // Upload nouvelle image
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-            $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-
-            if (in_array($ext, $allowed)) {
-                // Supprimer ancienne image
-                if ($article['image']) {
-                    $oldPath = __DIR__ . '/../uploads/' . $article['image'];
-                    if (file_exists($oldPath)) {
-                        unlink($oldPath);
-                    }
-                }
-
-                $imageName = uniqid('article_') . '.' . $ext;
-                move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/../uploads/' . $imageName);
-            } else {
-                $erreur = 'Format d\'image non autorise.';
-            }
-        }
-
-        if (!$erreur) {
-            $stmt = $pdo->prepare("
-                UPDATE articles SET
-                    titre = ?, slug = ?, contenu = ?, extrait = ?,
-                    image = ?, image_alt = ?, meta_titre = ?, meta_description = ?,
-                    categorie_id = ?, date_publication = ?
-                WHERE id = ?
-            ");
-            $stmt->execute([$titre, $slug, $contenu, $extrait, $imageName, $imageAlt, $metaTitre, $metaDescription, $categorieId, $datePublication, $id]);
-            setFlash('success', 'Article modifie avec succes.');
-            redirect('/articles/');
-        }
-    }
-} else {
-    $_POST = $article;
-    if ($article['date_publication']) {
-        $_POST['date_publication'] = date('Y-m-d\TH:i', strtotime($article['date_publication']));
-    }
+$datePublication = '';
+if ($article['date_publication']) {
+    $datePublication = date('Y-m-d\TH:i', strtotime($article['date_publication']));
 }
 ?>
 
@@ -84,24 +31,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="/articles/" class="btn btn-secondary">Retour</a>
     </div>
 
-    <?php if ($erreur): ?>
-        <div class="alert alert-error"><?= e($erreur) ?></div>
-    <?php endif; ?>
+    <form method="POST" action="/articles/traitement.php" enctype="multipart/form-data">
+        <input type="hidden" name="action" value="modifier">
+        <input type="hidden" name="id" value="<?= $id ?>">
 
-    <form method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="titre">Titre *</label>
-            <input type="text" id="titre" name="titre" class="form-control" value="<?= e($_POST['titre'] ?? '') ?>" required>
+            <input type="text" id="titre" name="titre" class="form-control" value="<?= e($article['titre']) ?>" required>
         </div>
 
         <div class="form-group">
             <label for="extrait">Extrait</label>
-            <textarea id="extrait" name="extrait" class="form-control" rows="2"><?= e($_POST['extrait'] ?? '') ?></textarea>
+            <textarea id="extrait" name="extrait" class="form-control" rows="2"><?= e($article['extrait']) ?></textarea>
         </div>
 
         <div class="form-group">
             <label for="contenu">Contenu *</label>
-            <textarea id="contenu" name="contenu" class="form-control" required><?= e($_POST['contenu'] ?? '') ?></textarea>
+            <textarea id="contenu" name="contenu" class="form-control" required><?= e($article['contenu']) ?></textarea>
         </div>
 
         <div class="form-group">
@@ -109,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select id="categorie_id" name="categorie_id" class="form-control">
                 <option value="">-- Selectionner --</option>
                 <?php foreach ($categories as $cat): ?>
-                    <option value="<?= $cat['id'] ?>" <?= ($_POST['categorie_id'] ?? '') == $cat['id'] ? 'selected' : '' ?>>
+                    <option value="<?= $cat['id'] ?>" <?= $article['categorie_id'] == $cat['id'] ? 'selected' : '' ?>>
                         <?= e($cat['nom']) ?>
                     </option>
                 <?php endforeach; ?>
@@ -129,12 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="form-group">
             <label for="image_alt">Texte alternatif (alt)</label>
-            <input type="text" id="image_alt" name="image_alt" class="form-control" value="<?= e($_POST['image_alt'] ?? '') ?>">
+            <input type="text" id="image_alt" name="image_alt" class="form-control" value="<?= e($article['image_alt']) ?>">
         </div>
 
         <div class="form-group">
             <label for="date_publication">Date de publication</label>
-            <input type="datetime-local" id="date_publication" name="date_publication" class="form-control" value="<?= e($_POST['date_publication'] ?? '') ?>">
+            <input type="datetime-local" id="date_publication" name="date_publication" class="form-control" value="<?= $datePublication ?>">
         </div>
 
         <hr style="margin: 1.5rem 0;">
@@ -142,15 +88,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="form-group">
             <label for="meta_titre">Meta titre (max 70 caracteres)</label>
-            <input type="text" id="meta_titre" name="meta_titre" class="form-control" maxlength="70" value="<?= e($_POST['meta_titre'] ?? '') ?>">
+            <input type="text" id="meta_titre" name="meta_titre" class="form-control" maxlength="70" value="<?= e($article['meta_titre']) ?>">
         </div>
 
         <div class="form-group">
             <label for="meta_description">Meta description (max 160 caracteres)</label>
-            <textarea id="meta_description" name="meta_description" class="form-control" rows="2" maxlength="160"><?= e($_POST['meta_description'] ?? '') ?></textarea>
+            <textarea id="meta_description" name="meta_description" class="form-control" rows="2" maxlength="160"><?= e($article['meta_description']) ?></textarea>
         </div>
 
         <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+</div>
+
+<!-- Images supplementaires -->
+<div class="card">
+    <div class="card-header">
+        <h2>Images supplementaires</h2>
+    </div>
+
+    <?php if (empty($images)): ?>
+        <p class="text-muted">Aucune image supplementaire.</p>
+    <?php else: ?>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+            <?php foreach ($images as $img): ?>
+                <div style="text-align: center; padding: 0.5rem; border: 1px solid #eee; border-radius: 4px;">
+                    <img src="/uploads/<?= e($img['fichier']) ?>" alt="<?= e($img['alt']) ?>" style="max-width: 100%; max-height: 100px; object-fit: cover; border-radius: 4px;">
+                    <p style="font-size: 0.8rem; margin: 0.5rem 0; color: #666;"><?= e($img['alt']) ?></p>
+                    <a href="/articles/traitement.php?action=supprimer_image&image_id=<?= $img['id'] ?>&article_id=<?= $id ?>" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer cette image ?')">Supprimer</a>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
+    <hr style="margin: 1rem 0;">
+    <h4 style="font-size: 0.95rem; margin-bottom: 1rem;">Ajouter une image</h4>
+
+    <form method="POST" action="/articles/traitement.php" enctype="multipart/form-data">
+        <input type="hidden" name="action" value="ajouter_image">
+        <input type="hidden" name="article_id" value="<?= $id ?>">
+
+        <div class="form-group">
+            <label for="fichier">Image *</label>
+            <input type="file" id="fichier" name="fichier" class="form-control" accept="image/*" required>
+        </div>
+
+        <div class="form-group">
+            <label for="alt">Texte alternatif (alt) *</label>
+            <input type="text" id="alt" name="alt" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-secondary">Ajouter l'image</button>
     </form>
 </div>
 

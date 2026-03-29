@@ -1,22 +1,18 @@
 <?php
+require_once __DIR__ . '/../models/Article.php';
+require_once __DIR__ . '/../models/Categorie.php';
+require_once __DIR__ . '/../models/Image.php';
+
 $pageTitle = 'Tableau de bord';
 require_once __DIR__ . '/../includes/header.php';
 
-$pdo = getConnection();
-
-// Statistiques
-$nbArticles = $pdo->query("SELECT COUNT(*) FROM articles")->fetchColumn();
-$nbCategories = $pdo->query("SELECT COUNT(*) FROM categories")->fetchColumn();
-$nbImages = $pdo->query("SELECT COUNT(*) FROM images")->fetchColumn();
+// Statistiques via les modèles
+$nbArticles = Article::count();
+$nbCategories = Categorie::count();
+$nbImages = Image::count();
 
 // Derniers articles
-$derniersArticles = $pdo->query("
-    SELECT a.*, c.nom as categorie_nom
-    FROM articles a
-    LEFT JOIN categories c ON a.categorie_id = c.id
-    ORDER BY a.date_creation DESC
-    LIMIT 5
-")->fetchAll();
+$derniersArticles = Article::findRecent(5);
 ?>
 
 <h2 style="margin-bottom: 1.5rem; color: #1a1a2e;">Tableau de bord</h2>
@@ -32,7 +28,7 @@ $derniersArticles = $pdo->query("
     </div>
     <div class="stat-card">
         <h3><?= $nbImages ?></h3>
-        <p>Images</p>
+        <p>Images (dans les articles)</p>
     </div>
 </div>
 

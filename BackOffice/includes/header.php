@@ -310,7 +310,6 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
             <li><a href="/index.php" class="<?= $currentPage === 'index' && $currentDir === 'public' ? 'active' : '' ?>">Tableau de bord</a></li>
             <li><a href="/articles/" class="<?= $currentDir === 'articles' ? 'active' : '' ?>">Articles</a></li>
             <li><a href="/categories/" class="<?= $currentDir === 'categories' ? 'active' : '' ?>">Categories</a></li>
-            <li><a href="/images/" class="<?= $currentDir === 'images' ? 'active' : '' ?>">Images</a></li>
         </ul>
     </nav>
 
