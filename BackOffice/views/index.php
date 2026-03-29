@@ -45,12 +45,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎯 Back Office</h1>
+        <h1>Back Office</h1>
         <p>L'API Back Office fonctionne correctement!</p>
         <div class="status">
-            <strong>Status:</strong> ✅ Running<br>
-            <strong>Framework:</strong> Flight PHP<br>
-            <strong>Version PHP:</strong> 8.2
+            <strong>Status:</strong> Running<br>
+            <strong>PHP:</strong> 8.2 avec PDO
         </div>
     </div>
 </body>

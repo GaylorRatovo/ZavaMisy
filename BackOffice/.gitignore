@@ -1,7 +1,3 @@
-# Dépendances Composer
-/vendor/
-composer.lock
-
 # Fichiers d'environnement
 .env
 .env.local
