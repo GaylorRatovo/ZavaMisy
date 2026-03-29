@@ -21,6 +21,10 @@ Thumbs.db
 *.tmp
 .cache/
 
+# Uploads (images)
+/public/uploads/*
+!/public/uploads/.gitkeep
+
 # Build et distribution
 /build/
 /dist/
