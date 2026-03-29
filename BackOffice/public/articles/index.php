@@ -38,13 +38,16 @@ $articles = Article::findAll();
                             <?php endif; ?>
                         </td>
                         <td>
-                            <strong><?= e($article['titre']) ?></strong>
+                            <a href="/articles/voir.php?id=<?= $article['id'] ?>" style="text-decoration: none; color: inherit;">
+                                <strong><?= e($article['titre']) ?></strong>
+                            </a>
                             <br><small class="text-muted"><?= e(truncate($article['extrait'] ?? '', 50)) ?></small>
                         </td>
                         <td><?= e($article['categorie_nom'] ?? '-') ?></td>
                         <td><?= $article['nb_images'] ?></td>
                         <td><?= formatDate($article['date_publication']) ?></td>
                         <td class="actions">
+                            <a href="/articles/voir.php?id=<?= $article['id'] ?>" class="btn btn-primary btn-sm">Voir</a>
                             <a href="/articles/modifier.php?id=<?= $article['id'] ?>" class="btn btn-secondary btn-sm">Modifier</a>
                             <a href="/articles/traitement.php?action=supprimer&id=<?= $article['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer cet article ?')">Supprimer</a>
                         </td>
