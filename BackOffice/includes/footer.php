@@ -18,7 +18,7 @@
                 menubar: false,
                 branding: false,
                 promotion: false,
-                content_style: 'body { font-family: "Libre Baskerville", Georgia, "Times New Roman", serif; font-size: 15px; line-height: 1.7; color: #2d2d2d; } h1, h2, h3, h4, h5, h6 { font-family: "Cormorant Garamond", Georgia, serif; color: #1a2f4e; }',
+                content_style: 'body { font-family: "Libre Baskerville", Georgia, "Times New Roman", serif; font-size: 15px; line-height: 1.7; color: #2d2d2d; } h1, h2, h3, h4, h5, h6 { font-family: "Cormorant Garamond", Georgia, serif; color: #1a2f4e; } img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border-radius: 4px; } figure { max-width: 100%; margin: 1rem 0; } figure img { width: 100%; } figcaption { font-size: 0.85rem; color: #6b6b6b; text-align: center; margin-top: 0.5rem; font-style: italic; }',
                 image_advtab: true,
                 valid_elements: '*[*]',
                 extended_valid_elements: '*[*]',

@@ -418,6 +418,36 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
             border: 1px solid var(--color-border);
         }
 
+        /* Rich content (TinyMCE output) */
+        .rich-content img,
+        .content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1rem 0;
+            border-radius: var(--radius-sm);
+        }
+
+        .rich-content figure,
+        .content figure {
+            max-width: 100%;
+            margin: 1rem 0;
+        }
+
+        .rich-content figure img,
+        .content figure img {
+            width: 100%;
+        }
+
+        .rich-content figcaption,
+        .content figcaption {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            text-align: center;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
         /* Helper classes */
         .text-muted {
             color: var(--color-text-muted);

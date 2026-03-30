@@ -29,6 +29,9 @@ if ($article['categorie_id']) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?= e($article['meta_description'] ?? $article['extrait']) ?>">
     <title><?= e($article['meta_titre'] ?: $article['titre']) ?> - Iran Conflit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -36,17 +39,31 @@ if ($article['categorie_id']) {
             box-sizing: border-box;
         }
 
+        :root {
+            --color-primary: #1a2f4e;
+            --color-primary-light: #2a4a6e;
+            --color-accent: #c9a962;
+            --color-accent-dark: #b08d4a;
+            --color-bg: #faf9f6;
+            --color-white: #ffffff;
+            --color-text: #2d2d2d;
+            --color-text-muted: #6b6b6b;
+            --color-border: #e5e2db;
+            --font-heading: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+            --font-body: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+        }
+
         body {
-            font-family: Georgia, 'Times New Roman', serif;
-            background-color: #f8f8f8;
-            color: #222;
+            font-family: var(--font-body);
+            background-color: var(--color-bg);
+            color: var(--color-text);
             line-height: 1.8;
         }
 
-        /* Barre de prévisualisation */
+        /* Barre de previsualisation */
         .preview-bar {
-            background: #1a1a2e;
-            color: #fff;
+            background: var(--color-primary);
+            color: var(--color-white);
             padding: 0.75rem 2rem;
             display: flex;
             justify-content: space-between;
@@ -54,25 +71,40 @@ if ($article['categorie_id']) {
             position: sticky;
             top: 0;
             z-index: 100;
+            border-bottom: 3px solid var(--color-accent);
         }
 
         .preview-bar span {
             font-size: 0.9rem;
-            color: #e94560;
+            color: var(--color-accent);
             font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         .preview-bar a {
-            color: #fff;
+            color: var(--color-primary);
             text-decoration: none;
             padding: 0.5rem 1rem;
-            background: #e94560;
+            background: var(--color-accent);
             border-radius: 4px;
             font-size: 0.85rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
         }
 
         .preview-bar a:hover {
-            background: #c73e54;
+            background: var(--color-accent-dark);
+        }
+
+        .preview-bar a.secondary {
+            background: transparent;
+            border: 1px solid var(--color-accent);
+            color: var(--color-accent);
+        }
+
+        .preview-bar a.secondary:hover {
+            background: var(--color-accent);
+            color: var(--color-primary);
         }
 
         /* Article */
@@ -80,45 +112,47 @@ if ($article['categorie_id']) {
             max-width: 800px;
             margin: 0 auto;
             padding: 3rem 2rem;
-            background: #fff;
-            min-height: calc(100vh - 52px);
+            background: var(--color-white);
+            min-height: calc(100vh - 55px);
         }
 
         .category {
             display: inline-block;
-            background: #e94560;
-            color: #fff;
+            background: var(--color-accent);
+            color: var(--color-primary);
             padding: 0.25rem 0.75rem;
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 1rem;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-weight: 700;
+            border-radius: 3px;
         }
 
         h1 {
+            font-family: var(--font-heading);
             font-size: 2.5rem;
             line-height: 1.2;
             margin-bottom: 1rem;
-            color: #1a1a2e;
+            color: var(--color-primary);
+            font-weight: 600;
         }
 
         .meta {
-            color: #666;
+            color: var(--color-text-muted);
             font-size: 0.9rem;
             margin-bottom: 2rem;
             padding-bottom: 1.5rem;
-            border-bottom: 1px solid #eee;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            border-bottom: 1px solid var(--color-border);
         }
 
         .excerpt {
             font-size: 1.25rem;
-            color: #444;
+            color: var(--color-text-muted);
             font-style: italic;
             margin-bottom: 2rem;
             padding-left: 1.5rem;
-            border-left: 4px solid #e94560;
+            border-left: 4px solid var(--color-accent);
         }
 
         .featured-image {
@@ -134,7 +168,7 @@ if ($article['categorie_id']) {
 
         .featured-image figcaption {
             font-size: 0.85rem;
-            color: #666;
+            color: var(--color-text-muted);
             text-align: center;
             margin-top: 0.5rem;
             font-style: italic;
@@ -149,15 +183,43 @@ if ($article['categorie_id']) {
         }
 
         .content h2 {
+            font-family: var(--font-heading);
             font-size: 1.75rem;
             margin: 2rem 0 1rem;
-            color: #1a1a2e;
+            color: var(--color-primary);
         }
 
         .content h3 {
+            font-family: var(--font-heading);
             font-size: 1.4rem;
             margin: 1.5rem 0 1rem;
-            color: #1a1a2e;
+            color: var(--color-primary);
+        }
+
+        /* Images dans le contenu - IMPORTANT pour les images TinyMCE */
+        .content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 4px;
+        }
+
+        .content figure {
+            max-width: 100%;
+            margin: 1.5rem 0;
+        }
+
+        .content figure img {
+            width: 100%;
+        }
+
+        .content figcaption {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            text-align: center;
+            margin-top: 0.5rem;
+            font-style: italic;
         }
 
         /* Galerie d'images */
@@ -166,10 +228,10 @@ if ($article['categorie_id']) {
         }
 
         .gallery h3 {
+            font-family: var(--font-heading);
             font-size: 1.2rem;
             margin-bottom: 1rem;
-            color: #1a1a2e;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--color-primary);
         }
 
         .gallery-grid {
@@ -191,7 +253,7 @@ if ($article['categorie_id']) {
 
         .gallery-grid figcaption {
             font-size: 0.8rem;
-            color: #666;
+            color: var(--color-text-muted);
             margin-top: 0.25rem;
         }
 
@@ -199,14 +261,15 @@ if ($article['categorie_id']) {
         .seo-info {
             margin-top: 3rem;
             padding: 1.5rem;
-            background: #f0f0f0;
+            background: var(--color-bg);
             border-radius: 4px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            border: 1px solid var(--color-border);
         }
 
         .seo-info h4 {
-            font-size: 0.9rem;
-            color: #666;
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            color: var(--color-primary);
             margin-bottom: 1rem;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -220,19 +283,38 @@ if ($article['categorie_id']) {
         }
 
         .seo-info dt {
-            font-weight: 600;
-            color: #444;
+            font-weight: 700;
+            color: var(--color-primary);
         }
 
         .seo-info dd {
-            color: #666;
+            color: var(--color-text-muted);
         }
 
         .seo-info code {
-            background: #fff;
+            background: var(--color-white);
             padding: 0.1rem 0.3rem;
             border-radius: 2px;
             font-size: 0.85rem;
+            border: 1px solid var(--color-border);
+        }
+
+        @media (max-width: 600px) {
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .seo-info dl {
+                grid-template-columns: 1fr;
+            }
+
+            .seo-info dt {
+                margin-top: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -241,7 +323,7 @@ if ($article['categorie_id']) {
         <span>Mode previsualisation</span>
         <div>
             <a href="/articles/modifier.php?id=<?= $id ?>">Modifier</a>
-            <a href="/articles/" style="background: #16213e; margin-left: 0.5rem;">Retour a la liste</a>
+            <a href="/articles/" class="secondary" style="margin-left: 0.5rem;">Retour a la liste</a>
         </div>
     </div>
 
