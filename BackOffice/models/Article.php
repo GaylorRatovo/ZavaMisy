@@ -46,15 +46,85 @@ class Article
     }
 
     /**
-     * Récupère un article par son ID
+     * Récupère un article par son ID avec catégorie
      */
     public static function findById(int $id): ?array
     {
         $pdo = self::db();
-        $stmt = $pdo->prepare("SELECT * FROM articles WHERE id = ?");
+        $stmt = $pdo->prepare("
+            SELECT a.*, c.nom as categorie_nom, c.slug as categorie_slug
+            FROM articles a
+            LEFT JOIN categories c ON a.categorie_id = c.id
+            WHERE a.id = ?
+        ");
         $stmt->execute([$id]);
         $result = $stmt->fetch();
         return $result ?: null;
+    }
+
+    /**
+     * Récupère un article par son slug avec catégorie
+     */
+    public static function findBySlug(string $slug): ?array
+    {
+        $pdo = self::db();
+        $stmt = $pdo->prepare("
+            SELECT a.*, c.nom as categorie_nom, c.slug as categorie_slug
+            FROM articles a
+            LEFT JOIN categories c ON a.categorie_id = c.id
+            WHERE a.slug = ?
+        ");
+        $stmt->execute([$slug]);
+        $result = $stmt->fetch();
+        return $result ?: null;
+    }
+
+    /**
+     * Récupère les images d'un article
+     */
+    public static function findImages(int $articleId): array
+    {
+        $pdo = self::db();
+        $stmt = $pdo->prepare("SELECT * FROM images WHERE article_id = ? ORDER BY id ASC");
+        $stmt->execute([$articleId]);
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Récupère les articles par catégorie
+     */
+    public static function findByCategory(int $categoryId, int $limit = 100): array
+    {
+        $pdo = self::db();
+        $stmt = $pdo->prepare("
+            SELECT a.*, c.nom as categorie_nom, c.slug as categorie_slug,
+                   (SELECT COUNT(*) FROM images WHERE article_id = a.id) as nb_images
+            FROM articles a
+            LEFT JOIN categories c ON a.categorie_id = c.id
+            WHERE a.categorie_id = ?
+            ORDER BY a.date_creation DESC
+            LIMIT ?
+        ");
+        $stmt->execute([$categoryId, $limit]);
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Récupère les articles connexes (même catégorie, différent ID)
+     */
+    public static function findRelated(int $articleId, int $categoryId, int $limit = 3): array
+    {
+        $pdo = self::db();
+        $stmt = $pdo->prepare("
+            SELECT a.*, c.nom as categorie_nom, c.slug as categorie_slug
+            FROM articles a
+            LEFT JOIN categories c ON a.categorie_id = c.id
+            WHERE a.categorie_id = ? AND a.id != ?
+            ORDER BY a.date_creation DESC
+            LIMIT ?
+        ");
+        $stmt->execute([$categoryId, $articleId, $limit]);
+        return $stmt->fetchAll();
     }
 
     /**

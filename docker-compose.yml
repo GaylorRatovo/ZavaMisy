@@ -30,6 +30,10 @@ services:
       - ./FrontOffice:/var/www/html
     environment:
       - APP_ENV=development
+      - API_URL=http://back-office
+      - UPLOADS_URL=http://localhost:8001
+    depends_on:
+      - back-office
     networks:
       - zavamisy-network
 
@@ -44,7 +48,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./BackOffice/sql/01-schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-      - ./BackOffice/sql/02-data.sql:/docker-entrypoint-initdb.d/02-data.sql
+      - ./BackOffice/sql/03-test-data.sql:/docker-entrypoint-initdb.d/03-test-data.sql
     networks:
       - zavamisy-network
 

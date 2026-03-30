@@ -1,8 +1,8 @@
 <?php
 
 /**
- * API Endpoint - Liste des categories
- * GET /api/categories.php
+ * API Endpoint - Catégories
+ * GET /api/categories.php - Liste toutes les catégories
  */
 
 header('Content-Type: application/json; charset=utf-8');
@@ -21,10 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     exit;
 }
 
-require_once __DIR__ . '/../../models/Categorie.php';
+require_once __DIR__ . '/../../config/database.php';
 
 try {
-    $categories = Categorie::findAll();
+    $pdo = getConnection();
+    $categories = $pdo->query("
+        SELECT c.*,
+               (SELECT COUNT(*) FROM articles WHERE categorie_id = c.id) as nb_articles
+        FROM categories c
+        ORDER BY c.nom ASC
+    ")->fetchAll();
 
     echo json_encode([
         'success' => true,
