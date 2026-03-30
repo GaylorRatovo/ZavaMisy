@@ -2,6 +2,9 @@
 session_start();
 require_once __DIR__ . '/functions.php';
 
+// Protéger toutes les pages du BackOffice
+requireAuth();
+
 $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 $currentDir = basename(dirname($_SERVER['PHP_SELF']));
 ?>
@@ -43,6 +46,27 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
 
         .header h1 span {
             color: #e94560;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #ccc;
+        }
+
+        .btn-logout {
+            background: #e94560;
+            color: #fff;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: background 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: #c73e54;
         }
 
         /* Navigation */
@@ -303,6 +327,10 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
 <body>
     <header class="header">
         <h1>Iran <span>Conflit</span> - BackOffice</h1>
+        <div class="user-info">
+            <span><?= e($_SESSION['admin_username'] ?? '') ?></span>
+            <a href="/logout.php" class="btn-logout">Déconnexion</a>
+        </div>
     </header>
 
     <nav class="nav">

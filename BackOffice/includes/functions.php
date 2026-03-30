@@ -74,3 +74,21 @@ function formatDate(?string $date): string
     if (!$date) return '-';
     return date('d/m/Y H:i', strtotime($date));
 }
+
+/**
+ * Vérifie si l'utilisateur est connecté
+ */
+function isLoggedIn(): bool
+{
+    return isset($_SESSION['admin_id']);
+}
+
+/**
+ * Requiert une authentification pour accéder à la page
+ */
+function requireAuth(): void
+{
+    if (!isLoggedIn()) {
+        redirect('/login.php');
+    }
+}

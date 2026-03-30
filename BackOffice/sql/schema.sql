@@ -34,6 +34,14 @@ CREATE TABLE images (
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Table des administrateurs
+CREATE TABLE admins (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL
+);
+
 -- Index
 CREATE INDEX idx_articles_slug ON articles(slug);
 CREATE INDEX idx_categories_slug ON categories(slug);
@@ -45,3 +53,7 @@ INSERT INTO categories (nom, slug) VALUES
 ('Militaire', 'militaire'),
 ('Humanitaire', 'humanitaire'),
 ('Economie', 'economie');
+
+-- Administrateur par défaut
+INSERT INTO admins (username, email, password) VALUES
+('admin', 'admin@zavamisy.mg', 'admin');
