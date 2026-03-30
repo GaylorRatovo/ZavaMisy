@@ -43,7 +43,8 @@ services:
       - POSTGRES_PASSWORD=secret
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./BackOffice/sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./BackOffice/sql/01-schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./BackOffice/sql/02-data.sql:/docker-entrypoint-initdb.d/02-data.sql
     networks:
       - zavamisy-network
 
