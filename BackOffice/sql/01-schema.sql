@@ -47,13 +47,3 @@ CREATE INDEX idx_articles_slug ON articles(slug);
 CREATE INDEX idx_categories_slug ON categories(slug);
 CREATE INDEX idx_images_article ON images(article_id);
 
--- Catégories initiales
-INSERT INTO categories (nom, slug) VALUES
-('Politique', 'politique'),
-('Militaire', 'militaire'),
-('Humanitaire', 'humanitaire'),
-('Economie', 'economie');
-
--- Administrateur par défaut
-INSERT INTO admins (username, email, password) VALUES
-('admin', 'admin@zavamisy.mg', 'admin');

@@ -2,6 +2,17 @@
 -- Données de test pour ZavaMisy
 -- ========================================
 
+-- Catégories initiales
+INSERT INTO categories (nom, slug) VALUES
+('Politique', 'politique'),
+('Militaire', 'militaire'),
+('Humanitaire', 'humanitaire'),
+('Economie', 'economie');
+
+-- Administrateur par défaut
+INSERT INTO admins (username, email, password) VALUES
+('admin', 'admin@zavamisy.mg', 'admin');
+
 -- Articles de test
 INSERT INTO articles (titre, slug, contenu, extrait, image, image_alt, meta_titre, meta_description, categorie_id, date_publication) VALUES
 (
