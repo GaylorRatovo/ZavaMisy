@@ -55,14 +55,11 @@
 </IfModule>
 
 # =====================================================
-# URL REWRITING
+# SECURITE HEADERS
 # =====================================================
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /
-
-    # Rediriger les requêtes vers index.php
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php [QSA,L]
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
