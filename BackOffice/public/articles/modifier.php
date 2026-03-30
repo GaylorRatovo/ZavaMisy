@@ -47,7 +47,7 @@ if ($article['date_publication']) {
 
         <div class="form-group">
             <label for="contenu">Contenu *</label>
-            <textarea id="contenu" name="contenu" class="form-control" required><?= e($article['contenu']) ?></textarea>
+            <textarea id="contenu" name="contenu" class="form-control"><?= e($article['contenu']) ?></textarea>
         </div>
 
         <div class="form-group">

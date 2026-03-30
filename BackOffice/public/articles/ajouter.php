@@ -28,7 +28,7 @@ $categories = Categorie::findAllSimple();
 
         <div class="form-group">
             <label for="contenu">Contenu *</label>
-            <textarea id="contenu" name="contenu" class="form-control" required></textarea>
+            <textarea id="contenu" name="contenu" class="form-control"></textarea>
         </div>
 
         <div class="form-group">
