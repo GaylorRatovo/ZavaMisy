@@ -274,7 +274,7 @@ if ($article['categorie_id']) {
         <?php endif; ?>
 
         <div class="content">
-            <?= nl2br(e($article['contenu'])) ?>
+            <?= $article['contenu'] ?>
         </div>
 
         <?php if (!empty($images)): ?>
