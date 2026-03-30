@@ -5,8 +5,8 @@
     </footer>
 
     <!-- TinyMCE -->
-    <script src="/js/tinymce/tinymce.min.js"></script>
-    <script>
+    <script src="/js/tinymce/tinymce.min.js" defer></script>
+    <script defer>
         // Initialiser TinyMCE uniquement si le textarea #contenu existe
         if (document.getElementById('contenu')) {
             tinymce.init({

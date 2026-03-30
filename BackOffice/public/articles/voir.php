@@ -28,10 +28,29 @@ if ($article['categorie_id']) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?= e($article['meta_description'] ?? $article['extrait']) ?>">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://votredomaine.com/articles/<?= e($article['slug']) ?>">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="<?= e($article['meta_titre'] ?: $article['titre']) ?>">
+    <meta property="og:description" content="<?= e($article['meta_description'] ?? $article['extrait']) ?>">
+    <?php if ($article['image']): ?>
+    <meta property="og:image" content="https://votredomaine.com/uploads/<?= e($article['image']) ?>">
+    <?php endif; ?>
+    <meta property="og:locale" content="fr_FR">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= e($article['meta_titre'] ?: $article['titre']) ?>">
+    <meta name="twitter:description" content="<?= e($article['meta_description'] ?? $article['extrait']) ?>">
+
     <title><?= e($article['meta_titre'] ?: $article['titre']) ?> - Iran Conflit</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet"></noscript>
     <link rel="stylesheet" href="/css/article.css">
 </head>
 <body>
@@ -64,7 +83,12 @@ if ($article['categorie_id']) {
 
         <?php if ($article['image']): ?>
             <figure class="featured-image">
-                <img src="/uploads/<?= e($article['image']) ?>" alt="<?= e($article['image_alt']) ?>">
+                <img src="/uploads/<?= e($article['image']) ?>"
+                     alt="<?= e($article['image_alt']) ?>"
+                     width="1200"
+                     height="675"
+                     fetchpriority="high"
+                     decoding="async">
                 <?php if ($article['image_alt']): ?>
                     <figcaption><?= e($article['image_alt']) ?></figcaption>
                 <?php endif; ?>
@@ -81,7 +105,12 @@ if ($article['categorie_id']) {
                 <div class="gallery-grid">
                     <?php foreach ($images as $img): ?>
                         <figure>
-                            <img src="/uploads/<?= e($img['fichier']) ?>" alt="<?= e($img['alt']) ?>">
+                            <img src="/uploads/<?= e($img['fichier']) ?>"
+                                 alt="<?= e($img['alt']) ?>"
+                                 loading="lazy"
+                                 decoding="async"
+                                 width="400"
+                                 height="300">
                             <figcaption><?= e($img['alt']) ?></figcaption>
                         </figure>
                     <?php endforeach; ?>
