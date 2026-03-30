@@ -1,7 +1,7 @@
     </main>
 
-    <footer style="text-align: center; padding: 2rem; color: #666; font-size: 0.9rem;">
-        <p>Iran Conflit - BackOffice &copy; <?= date('Y') ?></p>
+    <footer class="footer">
+        <p>Iran Conflit &copy; <?= date('Y') ?></p>
     </footer>
 
     <!-- TinyMCE -->
@@ -18,7 +18,7 @@
                 menubar: false,
                 branding: false,
                 promotion: false,
-                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; }',
+                content_style: 'body { font-family: "Libre Baskerville", Georgia, "Times New Roman", serif; font-size: 15px; line-height: 1.7; color: #2d2d2d; } h1, h2, h3, h4, h5, h6 { font-family: "Cormorant Garamond", Georgia, serif; color: #1a2f4e; }',
                 image_advtab: true,
                 valid_elements: '*[*]',
                 extended_valid_elements: '*[*]',

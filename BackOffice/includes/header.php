@@ -14,6 +14,9 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($pageTitle ?? 'BackOffice') ?> - Iran Conflit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -21,59 +24,100 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
             box-sizing: border-box;
         }
 
+        :root {
+            --color-primary: #1a2f4e;
+            --color-primary-light: #2a4a6e;
+            --color-accent: #c9a962;
+            --color-accent-dark: #b08d4a;
+            --color-bg: #faf9f6;
+            --color-bg-alt: #f5f3ef;
+            --color-white: #ffffff;
+            --color-text: #2d2d2d;
+            --color-text-muted: #6b6b6b;
+            --color-border: #e5e2db;
+            --color-success: #2e7d5a;
+            --color-success-bg: #e8f5e9;
+            --color-danger: #c62828;
+            --color-danger-bg: #ffebee;
+            --color-warning-bg: #fff8e1;
+            --color-warning: #8d6e00;
+            --font-heading: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+            --font-body: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+            --shadow-sm: 0 1px 3px rgba(26, 47, 78, 0.08);
+            --shadow-md: 0 4px 12px rgba(26, 47, 78, 0.1);
+            --shadow-lg: 0 8px 30px rgba(26, 47, 78, 0.12);
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
+            font-family: var(--font-body);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            font-size: 15px;
         }
 
         /* Header */
         .header {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #fff;
-            padding: 1rem 2rem;
+            background: var(--color-primary);
+            color: var(--color-white);
+            padding: 1.25rem 2.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            border-bottom: 3px solid var(--color-accent);
         }
 
         .header h1 {
-            font-size: 1.5rem;
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
             font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         .header h1 span {
-            color: #e94560;
+            color: var(--color-accent);
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            color: #ccc;
+            gap: 1.25rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.9rem;
+        }
+
+        .user-info span {
+            padding-right: 1.25rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .btn-logout {
-            background: #e94560;
-            color: #fff;
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
+            background: transparent;
+            color: var(--color-accent);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--color-accent);
+            border-radius: var(--radius-sm);
             text-decoration: none;
             font-size: 0.85rem;
-            transition: background 0.3s;
+            font-family: var(--font-body);
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
         }
 
         .btn-logout:hover {
-            background: #c73e54;
+            background: var(--color-accent);
+            color: var(--color-primary);
         }
 
         /* Navigation */
         .nav {
-            background: #16213e;
-            padding: 0 2rem;
-            border-bottom: 3px solid #e94560;
+            background: var(--color-white);
+            padding: 0 2.5rem;
+            border-bottom: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
         }
 
         .nav ul {
@@ -84,93 +128,118 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
 
         .nav a {
             display: block;
-            color: #ccc;
+            color: var(--color-text-muted);
             text-decoration: none;
-            padding: 1rem 1.5rem;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -3px;
+            padding: 1rem 1.75rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
         }
 
-        .nav a:hover,
+        .nav a:hover {
+            color: var(--color-primary);
+            background: var(--color-bg-alt);
+        }
+
         .nav a.active {
-            color: #fff;
-            background: rgba(233, 69, 96, 0.1);
-            border-bottom-color: #e94560;
+            color: var(--color-primary);
+            border-bottom-color: var(--color-accent);
+            font-weight: 700;
         }
 
         /* Main */
         .main {
             max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 2rem;
+            margin: 2.5rem auto;
+            padding: 0 2.5rem;
         }
 
         /* Cards */
         .card {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--color-border);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 1.75rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--color-border);
         }
 
         .card-header h2 {
-            font-size: 1.25rem;
-            color: #1a1a2e;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            letter-spacing: 0.3px;
         }
 
         /* Buttons */
         .btn {
             display: inline-block;
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.25rem;
             border: none;
-            border-radius: 4px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
             text-decoration: none;
             font-size: 0.9rem;
-            transition: all 0.3s;
+            font-family: var(--font-body);
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
         }
 
         .btn-primary {
-            background: #e94560;
-            color: #fff;
+            background: var(--color-accent);
+            color: var(--color-primary);
+            font-weight: 700;
         }
 
         .btn-primary:hover {
-            background: #c73e54;
+            background: var(--color-accent-dark);
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-secondary {
-            background: #16213e;
-            color: #fff;
+            background: var(--color-primary);
+            color: var(--color-white);
         }
 
         .btn-secondary:hover {
-            background: #1a1a2e;
+            background: var(--color-primary-light);
         }
 
         .btn-danger {
-            background: #dc3545;
-            color: #fff;
+            background: var(--color-danger);
+            color: var(--color-white);
         }
 
         .btn-danger:hover {
-            background: #c82333;
+            background: #b71c1c;
         }
 
         .btn-sm {
-            padding: 0.25rem 0.5rem;
+            padding: 0.35rem 0.75rem;
             font-size: 0.8rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--color-border);
+            color: var(--color-text);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
         }
 
         /* Tables */
@@ -181,19 +250,27 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
 
         .table th,
         .table td {
-            padding: 0.75rem;
+            padding: 1rem;
             text-align: left;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--color-border);
         }
 
         .table th {
-            background: #f8f9fa;
+            background: var(--color-bg-alt);
+            font-family: var(--font-heading);
             font-weight: 600;
-            color: #1a1a2e;
+            font-size: 0.95rem;
+            color: var(--color-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .table tr:hover {
-            background: #f8f9fa;
+            background: var(--color-bg);
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
         }
 
         .table .actions {
@@ -203,102 +280,133 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
 
         /* Forms */
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #1a1a2e;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            font-size: 0.9rem;
+            letter-spacing: 0.2px;
         }
 
         .form-control {
             width: 100%;
-            padding: 0.5rem 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
             font-size: 1rem;
-            transition: border-color 0.3s;
+            font-family: var(--font-body);
+            background: var(--color-white);
+            transition: all 0.3s ease;
         }
 
         .form-control:focus {
             outline: none;
-            border-color: #e94560;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(201, 169, 98, 0.15);
         }
 
         textarea.form-control {
             min-height: 150px;
             resize: vertical;
+            line-height: 1.6;
         }
 
         select.form-control {
             cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b6b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
         }
 
         /* Alerts */
         .alert {
-            padding: 1rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid;
         }
 
         .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: var(--color-success-bg);
+            color: var(--color-success);
+            border-left-color: var(--color-success);
         }
 
         .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: var(--color-danger-bg);
+            color: var(--color-danger);
+            border-left-color: var(--color-danger);
         }
 
         /* Stats */
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.75rem;
+            margin-bottom: 2.5rem;
         }
 
         .stat-card {
-            background: #fff;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-left: 4px solid #e94560;
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--color-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
         }
 
         .stat-card h3 {
-            font-size: 2rem;
-            color: #1a1a2e;
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
             margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
         }
 
         .stat-card p {
-            color: #666;
+            color: var(--color-text-muted);
             font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Badge */
         .badge {
             display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
+            padding: 0.3rem 0.7rem;
+            border-radius: var(--radius-sm);
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
         }
 
         .badge-success {
-            background: #d4edda;
-            color: #155724;
+            background: var(--color-success-bg);
+            color: var(--color-success);
         }
 
         .badge-warning {
-            background: #fff3cd;
-            color: #856404;
+            background: var(--color-warning-bg);
+            color: var(--color-warning);
         }
 
         /* Image preview */
@@ -306,12 +414,13 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
             max-width: 100px;
             max-height: 60px;
             object-fit: cover;
-            border-radius: 4px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
         }
 
         /* Helper classes */
         .text-muted {
-            color: #666;
+            color: var(--color-text-muted);
         }
 
         .text-center {
@@ -322,14 +431,76 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
         .mt-2 { margin-top: 1rem; }
         .mb-1 { margin-bottom: 0.5rem; }
         .mb-2 { margin-bottom: 1rem; }
+
+        /* Page title */
+        .page-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--color-border);
+            margin-top: 3rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .nav {
+                padding: 0 1rem;
+            }
+
+            .nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav a {
+                padding: 0.75rem 1rem;
+            }
+
+            .main {
+                padding: 0 1.5rem;
+                margin: 1.5rem auto;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
     <header class="header">
-        <h1>Iran <span>Conflit</span> - BackOffice</h1>
+        <h1>Iran <span>Conflit</span></h1>
         <div class="user-info">
             <span><?= e($_SESSION['admin_username'] ?? '') ?></span>
-            <a href="/logout.php" class="btn-logout">Déconnexion</a>
+            <a href="/logout.php" class="btn-logout">Deconnexion</a>
         </div>
     </header>
 
