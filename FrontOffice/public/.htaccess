@@ -10,7 +10,7 @@ RewriteEngine On
 # 1. URLs SEO-FRIENDLY
 # ----------------------------------------
 
-# Rediriger vers HTTPS (décommenter en production)
+# Rediriger vers HTTPS
 # RewriteCond %{HTTPS} off
 # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 

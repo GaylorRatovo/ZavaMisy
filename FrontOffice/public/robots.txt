@@ -8,6 +8,3 @@ Disallow: /*.json$
 
 # Crawl-delay pour éviter la surcharge
 Crawl-delay: 1
-
-# Sitemap (à créer si nécessaire)
-# Sitemap: https://votre-domaine.com/sitemap.xml
