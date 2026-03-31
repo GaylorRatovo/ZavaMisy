@@ -66,12 +66,11 @@ $categories = getCategories();
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
     <!-- Google Fonts avec display=swap pour éviter FOIT -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"></noscript>
 
     <!-- Styles critiques -->
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.min.css">
 
     <!-- Swiper CSS (chargé uniquement si nécessaire) -->
     <?php if (isset($hasMultipleImages) && $hasMultipleImages): ?>

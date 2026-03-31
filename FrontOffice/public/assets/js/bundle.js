@@ -1,0 +1,26 @@
+document.addEventListener('DOMContentLoaded', function () {
+    var carousels = document.querySelectorAll('.article-carousel .swiper');
+    if (carousels.length > 0 && typeof Swiper !== 'undefined') {
+        carousels.forEach(function (carouselEl) {
+            new Swiper(carouselEl, {
+                loop: true,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev'
+                },
+                keyboard: {
+                    enabled: true
+                },
+                a11y: {
+                    prevSlideMessage: 'Image precedente',
+                    nextSlideMessage: 'Image suivante',
+                    paginationBulletMessage: 'Aller a l\'image {{index}}'
+                }
+            });
+        });
+    }
+});
