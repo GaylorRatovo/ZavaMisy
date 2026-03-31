@@ -6,40 +6,10 @@
         </p>
     </footer>
 
-    <!-- Swiper JS (chargé uniquement si nécessaire) -->
+    <!-- Swiper JS (charge uniquement si necessaire) -->
     <?php if (isset($hasMultipleImages) && $hasMultipleImages): ?>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
-
-    <!-- Script d'initialisation Swiper -->
-    <script defer>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialiser tous les carrousels sur la page
-        const carousels = document.querySelectorAll('.article-carousel .swiper');
-        if (carousels.length > 0 && typeof Swiper !== 'undefined') {
-            carousels.forEach(function(carouselEl) {
-                new Swiper(carouselEl, {
-                    loop: true,
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true
-                    },
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
-                    keyboard: {
-                        enabled: true
-                    },
-                    a11y: {
-                        prevSlideMessage: 'Image précédente',
-                        nextSlideMessage: 'Image suivante',
-                        paginationBulletMessage: 'Aller à l\'image {{index}}'
-                    }
-                });
-            });
-        }
-    });
-    </script>
+    <script src="/assets/js/bundle.min.js" defer></script>
     <?php endif; ?>
 </body>
 </html>
